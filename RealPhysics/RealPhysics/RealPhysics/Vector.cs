@@ -21,6 +21,7 @@ namespace RealPhysics
             componentX = magnitude * Math.Cos(direction);
             componentY = magnitude * Math.Sin(direction);
             name = forceName;
+            Console.WriteLine("Git change test");
         }
 
         public string getName()
