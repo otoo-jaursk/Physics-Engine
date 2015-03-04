@@ -134,7 +134,6 @@ namespace RealPhysics
                 {
                     theirXVelocity = theirPossibleVxs[0];
                 }
-
                 double yJoules = .5 * Math.Pow(components[1], 2) * mass + .5 * Math.Pow(theirComponents[1], 2) * other.mass;
                 //formula I figured out don't question it
                 double[] theirPossibleVys = AdditionalMath.quadraticFormula(other.mass * mass + Math.Pow(other.mass, 2), 2 * other.mass * momentumX, -(2 * mass * yJoules - Math.Pow(momentumX, 2)));
