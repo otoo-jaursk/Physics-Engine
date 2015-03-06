@@ -24,5 +24,19 @@ namespace RealPhysics
             return x && y;
         }
 
+        public static bool contains(PointF point, RectangleF container)
+        {
+            bool x = point.X > container.X && point.X < container.X + container.Width;
+            bool y = point.Y < container.Y && point.Y > container.Y - container.Height;
+            return x && y;
+        }
+
+        public static bool intersects(RectangleF rekt1, RectangleF rekt2)
+        {
+            bool x = rekt1.X < rekt2.X && rekt1.X + rekt1.Width > rekt2.X + rekt2.Width || rekt2.X < rekt1.X && rekt2.X + rekt2.Width > rekt1.X + rekt1.Width;
+            bool y = rekt1.Y > rekt2.Y && rekt1.Y - rekt1.Height < rekt2.Y - rekt2.Height || rekt2.Y > rekt1.Y && rekt2.Y - rekt2.Height < rekt1.Y - rekt1.Height;
+            return x || y;
+        }
+
     }
 }
