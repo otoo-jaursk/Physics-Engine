@@ -33,8 +33,8 @@ namespace RealPhysics
 
         public static bool intersects(RectangleF rekt1, RectangleF rekt2)
         {
-            bool x = rekt1.X < rekt2.X && rekt1.X + rekt1.Width > rekt2.X + rekt2.Width || rekt2.X < rekt1.X && rekt2.X + rekt2.Width > rekt1.X + rekt1.Width;
-            bool y = rekt1.Y > rekt2.Y && rekt1.Y - rekt1.Height < rekt2.Y - rekt2.Height || rekt2.Y > rekt1.Y && rekt2.Y - rekt2.Height < rekt1.Y - rekt1.Height;
+            bool x = contains(new PointF(rekt1.X, rekt1.Y), rekt2) || contains(new PointF(rekt1.X + rekt1.Width, rekt1.Y - rekt1.Height), rekt2);
+            bool y = contains(new PointF(rekt2.X, rekt2.Y), rekt1) || contains(new PointF(rekt2.X + rekt2.Width, rekt2.Y - rekt2.Height), rekt1);
             return x || y;
         }
 
