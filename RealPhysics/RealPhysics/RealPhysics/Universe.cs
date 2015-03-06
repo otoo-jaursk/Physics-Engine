@@ -93,6 +93,21 @@ namespace RealPhysics
             return inAnyPlat;
         }
 
+        public void operateCollisions(GameObject obj, int x)
+        {
+            for (int y = x + 1; y < objects.Count; y++)
+            {
+                GameObject obj2 = objects.ElementAt(y);
+                RectangleF rekt1 = obj.getRekt();
+                RectangleF rekt2 = obj2.getRekt();
+                if (rekt1.IntersectsWith(rekt2))
+                {
+                    obj.collision(obj2);
+                }
+            }
+            
+        }
+
         public void operate()
         {
             if (keysDown[1])
@@ -123,16 +138,19 @@ namespace RealPhysics
                 Vector gravity = new Vector(g * player.getMass(), 3 * Math.PI / 2, "gravity");
                 player.addForce(gravity);
             }
+            operateCollisions(player, -1);
             player.determineMovement(fps, g);
             //keysDown = new bool[4];
-            foreach (GameObject obj in objects)
+            for(int x = 0; x < objects.Count; x++)
             {
+                GameObject obj = objects.ElementAt(x);
                 bool inPlatform = operatePlats(obj);
                 if (!inPlatform)
                 {
                     Vector gravity = new Vector(g * obj.getMass(), 3 * Math.PI / 2, "gravity");
                     obj.addForce(gravity);
                 }
+                operateCollisions(obj, x);
                 obj.determineMovement(fps, g);
             }
 
