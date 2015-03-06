@@ -100,7 +100,7 @@ namespace RealPhysics
                 GameObject obj2 = objects.ElementAt(y);
                 RectangleF rekt1 = obj.getRekt();
                 RectangleF rekt2 = obj2.getRekt();
-                if (rekt1.IntersectsWith(rekt2))
+                if (AdditionalMath.intersects(rekt1, rekt2))
                 {
                     obj.collision(obj2);
                 }
