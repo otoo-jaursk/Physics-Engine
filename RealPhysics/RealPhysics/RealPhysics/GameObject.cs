@@ -49,15 +49,13 @@ namespace RealPhysics
 
         public void removeForce(string name)
         {
-            hashedForces.Remove(new Vector(0, 0, name));
+            hashedForces.Remove(new Vector(0, 0, VectorType.FORCE, name));
         }
 
-        public void removeAllForces(string name)
+        public void removeAllForces(VectorType type)
         {
-            if (name.Length > 0)
-            {
-                hashedForces.RemoveWhere(x => x.getName().Substring(0, name.Length).GetHashCode() == name.GetHashCode());
-            }/*
+            hashedForces.RemoveWhere(x => x.getVectorType() == type);
+            /*
             for (int x = 0; x < forces.Count; x++)
             {
                 Vector v = forces[x];
@@ -71,7 +69,7 @@ namespace RealPhysics
         public void accelerate(int fps)
         {
             double mag = acceleration.getMagnitude() / fps;
-            Vector temp = new Vector(mag, acceleration.getDirection(), "acceleration");
+            Vector temp = new Vector(mag, acceleration.getDirection(), VectorType.ACCELERATION, "acceleration");
             velocity = velocity.resultantVector(temp);
         }
 
@@ -88,12 +86,12 @@ namespace RealPhysics
 
         private void determineAcceleration()
         {
-            Vector fnet = new Vector(0, 0, "resultantForce");
+            Vector fnet = new Vector(0, 0, VectorType.FORCE, "resultantForce");
             foreach (Vector v in forces)
             {
                 fnet = fnet.resultantVector(v);
             }
-            acceleration = new Vector(fnet.getMagnitude() / mass, fnet.getDirection(), "acceleration");
+            acceleration = new Vector(fnet.getMagnitude() / mass, fnet.getDirection(), VectorType.ACCELERATION, "acceleration");
         }
 
         public void collision(GameObject other)
@@ -141,8 +139,8 @@ namespace RealPhysics
             double otherVelocityMag = Math.Sqrt(Math.Pow(theirXVelocity, 2) + Math.Pow(theirYVelocity, 2));
             double otherDirection = Math.Atan2(theirYVelocity, theirXVelocity);
             double direction = Math.Atan2(ourYVelocity, ourXVelocity);
-            velocity = new Vector(velocityMag, direction, "velocity");
-            other.velocity = new Vector(otherVelocityMag, otherDirection, "velocity");
+            velocity = new Vector(velocityMag, direction, VectorType.VELOCITY, "velocity");
+            other.velocity = new Vector(otherVelocityMag, otherDirection, VectorType.VELOCITY, "velocity");
         }
 
         public double getVelocity()
@@ -171,7 +169,7 @@ namespace RealPhysics
             }*/
             if (velocity.getMagnitude() < .3)
             {
-                velocity = new Vector(0, 0, "velocity");
+                velocity = new Vector(0, 0, VectorType.VELOCITY, "velocity");
             }
             double[] comps = velocity.getComponent();
             float x = rekt.X;

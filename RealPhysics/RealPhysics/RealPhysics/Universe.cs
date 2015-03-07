@@ -78,11 +78,11 @@ namespace RealPhysics
                     obj.removeForce("gravity");
                     if (keysDown[0] && obj.getName().Equals("player"))
                     {
-                        obj.addForce(new Vector(1000, Math.PI / 2, "jump up"));
+                        obj.addForce(new Vector(1000, Math.PI / 2, VectorType.FORCE, "jump up"));
                     }   
                     if (Math.Abs(obj.getVelocity()) > .3)
                     {
-                        obj.addForce(new Vector(plat.getKineticFriction() * g * obj.getMass(), obj.getVelocityDirection() + Math.PI, "friction with " + plat.getName()));
+                        obj.addForce(new Vector(plat.getKineticFriction() * g * obj.getMass(), obj.getVelocityDirection() + Math.PI, VectorType.FRICTION, "friction with " + plat.getName()));
                     }
                     else
                     {
@@ -112,7 +112,7 @@ namespace RealPhysics
         {
             if (keysDown[1])
             {
-                player.addForce(new Vector(25, 0, "move right"));
+                player.addForce(new Vector(25, 0, VectorType.FORCE, "move right"));
             }
             else
             {
@@ -120,7 +120,7 @@ namespace RealPhysics
             }
             if (keysDown[3])
             {
-                player.addForce(new Vector(25, Math.PI, "move left"));
+                player.addForce(new Vector(25, Math.PI, VectorType.FORCE, "move left"));
             }
             else
             {
@@ -134,8 +134,8 @@ namespace RealPhysics
                     Console.WriteLine("Gravity ho");
                 }
                 player.removeForce("jump up");
-                player.removeAllForces("friction");
-                Vector gravity = new Vector(g * player.getMass(), 3 * Math.PI / 2, "gravity");
+                player.removeAllForces(VectorType.FRICTION);
+                Vector gravity = new Vector(g * player.getMass(), 3 * Math.PI / 2, VectorType.GRAVITY, "gravity");
                 player.addForce(gravity);
             }
             operateCollisions(player, -1);
@@ -147,7 +147,7 @@ namespace RealPhysics
                 bool inPlatform = operatePlats(obj);
                 if (!inPlatform)
                 {
-                    Vector gravity = new Vector(g * obj.getMass(), 3 * Math.PI / 2, "gravity");
+                    Vector gravity = new Vector(g * obj.getMass(), 3 * Math.PI / 2, VectorType.GRAVITY, "gravity");
                     obj.addForce(gravity);
                 }
                 operateCollisions(obj, x);

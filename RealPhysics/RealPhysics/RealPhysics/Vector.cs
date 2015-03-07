@@ -12,16 +12,22 @@ namespace RealPhysics
         private double direction;
         private double componentX;
         private double componentY;
+        private VectorType vectorType;
         private string name;
 
-        public Vector(double mag, double theta, string forceName)
+        public Vector(double mag, double theta, VectorType type, string vectorName)
         {
             magnitude = mag;
             direction = theta;
             componentX = magnitude * Math.Cos(direction);
             componentY = magnitude * Math.Sin(direction);
-            name = forceName;
-            Console.WriteLine("Git change test");
+            name = vectorName;
+            vectorType = type;
+        }
+
+        public VectorType getVectorType()
+        {
+            return vectorType;
         }
 
         public string getName()
@@ -53,7 +59,7 @@ namespace RealPhysics
         {
             double newCompX = componentX + other.componentX;
             double newCompY = componentY + other.componentY;
-            return new Vector(Math.Sqrt(Math.Pow(newCompX, 2) + Math.Pow(newCompY, 2)), Math.Atan2(newCompY, newCompX), "resultant of " + name + " " + other.name);
+            return new Vector(Math.Sqrt(Math.Pow(newCompX, 2) + Math.Pow(newCompY, 2)), Math.Atan2(newCompY, newCompX), vectorType, "resultant of " + name + " " + other.name);
         }
 
 
