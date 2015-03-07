@@ -16,11 +16,14 @@ namespace RealPhysics
         private bool elastic;
         private bool flight = false;
         private double startingHeight = -1;
+        private HashSet<Vector> hashedForces;
         public List<Vector> forces = new List<Vector>();
         string name;
 
         public GameObject(Vector v, Vector xcelration, double catholicChurchService, bool elasticity, RectangleF hitbox, string llamo)
         {
+            VectorEqualityComparer vectorComparer = new VectorEqualityComparer();
+            hashedForces = new HashSet<Vector>(vectorComparer);
             name = llamo;
             rekt = hitbox;
             velocity = v;
