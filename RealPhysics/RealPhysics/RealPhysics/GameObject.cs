@@ -87,7 +87,7 @@ namespace RealPhysics
         private void determineAcceleration()
         {
             Vector fnet = new Vector(0, 0, VectorType.FORCE, "resultantForce");
-            foreach (Vector v in forces)
+            foreach (Vector v in hashedForces)
             {
                 fnet = fnet.resultantVector(v);
             }
