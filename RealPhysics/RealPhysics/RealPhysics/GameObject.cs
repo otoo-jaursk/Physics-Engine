@@ -44,40 +44,20 @@ namespace RealPhysics
 
         public void addForce(Vector addedForce)
         {
-            foreach (Vector force in forces)
-            {
-                if (force.getName().Equals(addedForce.getName()))
-                {
-                    return;
-                }
-            }
-            forces.Add(addedForce);
+            hashedForces.Add(addedForce);
         }
 
         public void removeForce(string name)
         {
-            if(name.Equals("speed up"))
-            {
-                double[] comps = velocity.getComponent();
-                velocity = velocity.resultantVector(new Vector(comps[1], 3 * Math.PI / 2, ""));
-            }
-            for(int x = 0; x < forces.Count; x++)
-            {
-                Vector v = forces[x];
-                if (v.getName().Equals(name))
-                {
-                    forces.RemoveAt(x);
-                    if (v.getName().Equals("gravity"))
-                    {
-                        double[] comps = velocity.getComponent();
-                        velocity = velocity.resultantVector(new Vector(-comps[1], Math.PI / 2, ""));
-                    }
-                }
-            }
+            hashedForces.Remove(new Vector(0, 0, name));
         }
 
         public void removeAllForces(string name)
         {
+            if (name.Length > 0)
+            {
+                hashedForces.RemoveWhere(x => x.getName().Substring(0, name.Length).GetHashCode() == name.GetHashCode());
+            }/*
             for (int x = 0; x < forces.Count; x++)
             {
                 Vector v = forces[x];
@@ -85,7 +65,7 @@ namespace RealPhysics
                 {
                     forces.RemoveAt(x);
                 }
-            }
+            }*/
         }
 
         public void accelerate(int fps)
