@@ -107,24 +107,32 @@ namespace RealPhysics
                 double xJoules = .5 * Math.Pow(components[0], 2) * mass + .5 * Math.Pow(theirComponents[0], 2) * other.mass;
                 //formula I figured out
                 double[] theirPossibleVxs = AdditionalMath.quadraticFormula(other.mass * mass + Math.Pow(other.mass, 2), 2 * other.mass * momentumX, -(2 * mass * xJoules - Math.Pow(momentumX, 2)));
-                if (theirPossibleVxs[0] == other.velocity.getMagnitude())
+                if (Math.Round(theirPossibleVxs[0], 5) == Math.Round(theirComponents[0], 5))
                 {
                     theirXVelocity = theirPossibleVxs[1];
                 }
                 else
                 {
                     theirXVelocity = theirPossibleVxs[0];
+                    if (theirXVelocity == Double.NaN)
+                    {
+                        theirXVelocity = 0;
+                    }
                 }
                 double yJoules = .5 * Math.Pow(components[1], 2) * mass + .5 * Math.Pow(theirComponents[1], 2) * other.mass;
                 //formula I figured out don't question it
                 double[] theirPossibleVys = AdditionalMath.quadraticFormula(other.mass * mass + Math.Pow(other.mass, 2), 2 * other.mass * momentumX, -(2 * mass * yJoules - Math.Pow(momentumX, 2)));
-                if (theirPossibleVys[0] == other.velocity.getMagnitude())
+                if (Math.Round(theirPossibleVys[0], 5) == Math.Round(theirComponents[1], 5))
                 {
                     theirYVelocity = theirPossibleVys[1];
                 }
                 else
                 {
                     theirYVelocity = theirPossibleVys[0];
+                    if (Double.IsNaN(theirYVelocity))
+                    {
+                        theirYVelocity = 0;
+                    }
                 }
                 ourYVelocity = (momentumY - theirYVelocity * other.mass) / mass;
                 ourXVelocity = (momentumX - theirXVelocity * other.mass) / mass;
@@ -133,7 +141,6 @@ namespace RealPhysics
             {
                 ourXVelocity = theirXVelocity = momentumX / (mass + other.mass);
                 ourYVelocity = theirYVelocity = momentumY / (mass + other.mass);
-                
             }
             double velocityMag = Math.Sqrt(Math.Pow(ourXVelocity, 2) + Math.Pow(ourYVelocity, 2));
             double otherVelocityMag = Math.Sqrt(Math.Pow(theirXVelocity, 2) + Math.Pow(theirYVelocity, 2));
