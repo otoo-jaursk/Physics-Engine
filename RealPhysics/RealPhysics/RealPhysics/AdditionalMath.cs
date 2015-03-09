@@ -37,6 +37,5 @@ namespace RealPhysics
             bool y = contains(new PointF(rekt2.X, rekt2.Y), rekt1) || contains(new PointF(rekt2.X + rekt2.Width, rekt2.Y - rekt2.Height), rekt1);
             return x || y;
         }
-
     }
 }
