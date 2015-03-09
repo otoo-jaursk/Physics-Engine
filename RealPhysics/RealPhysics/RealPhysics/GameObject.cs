@@ -143,13 +143,13 @@ namespace RealPhysics
             other.velocity = new Vector(otherVelocityMag, otherDirection, VectorType.VELOCITY, "velocity");
             if (rekt.X < other.rekt.X)
             {
-                float change = (other.rekt.X - rekt.X) / 2;
+                float change = ((rekt.X + rekt.Width) - other.rekt.X) / 2;
                 rekt = new RectangleF(rekt.X - change, rekt.Y, rekt.Width, rekt.Height);
                 other.rekt = new RectangleF(other.rekt.X + change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
             }
             if (rekt.X > other.rekt.X)
             {
-                float change = (rekt.X - other.rekt.X) / 2;
+                float change = ((other.rekt.X  + other.rekt.Width) - rekt.X) / 2;
                 other.rekt = new RectangleF(other.rekt.X - change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
                 rekt = new RectangleF(rekt.X + change, rekt.Y, rekt.Width, rekt.Height); 
             }
