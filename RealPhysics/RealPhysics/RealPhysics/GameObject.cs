@@ -156,7 +156,7 @@ namespace RealPhysics
 
         }
 
-        public double getVelocity()
+        public double getVelocityMagnitude()
         {
             return velocity.getMagnitude();
         }
@@ -172,7 +172,7 @@ namespace RealPhysics
             return velocity.getDirection();
         }
 
-        public Vector getVelocity(string whatever)
+        public Vector getVelocity()
         {
             return velocity;
         }

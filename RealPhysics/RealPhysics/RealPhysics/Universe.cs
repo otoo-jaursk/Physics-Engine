@@ -76,11 +76,15 @@ namespace RealPhysics
                     rect = new RectangleF(rect.X, platform.Y + rect.Height, rect.Width, rect.Height);
                     obj.setRekt(rect);
                     obj.removeForce("gravity");
+                    Vector v = obj.getVelocity();
+                    double[] comps = v.getComponent();
+                    comps[1] = 0;
+                    v.setComponent(comps);
                     if (keysDown[0] && obj.getName().Equals("player"))
                     {
                         obj.addForce(new Vector(1000, Math.PI / 2, VectorType.FORCE, "jump up"));
                     }   
-                    if (Math.Abs(obj.getVelocity()) > .3)
+                    if (Math.Abs(obj.getVelocityMagnitude()) > .3)
                     {
                         obj.addForce(new Vector(plat.getKineticFriction() * g * obj.getMass(), obj.getVelocityDirection() + Math.PI, VectorType.FRICTION, "friction with " + plat.getName()));
                     }

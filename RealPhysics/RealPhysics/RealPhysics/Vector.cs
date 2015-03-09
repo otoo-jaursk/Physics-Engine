@@ -55,6 +55,15 @@ namespace RealPhysics
             double[] array = {componentX, componentY};
             return array;
         }
+
+        public void setComponent(double[] comp)
+        {
+            componentX = comp[0];
+            componentY = comp[1];
+            magnitude = Math.Sqrt(Math.Pow(componentY, 2) + Math.Pow(componentX, 2));
+            direction = Math.Atan2(componentY, componentX);
+        }
+
         public Vector resultantVector(Vector other)
         {
             double newCompX = componentX + other.componentX;
