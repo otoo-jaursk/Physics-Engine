@@ -106,7 +106,10 @@ namespace RealPhysics
                 //kinetic energy when only taking into account velocity in the x direction
                 double xJoules = .5 * Math.Pow(components[0], 2) * mass + .5 * Math.Pow(theirComponents[0], 2) * other.mass;
                 //formula I figured out
-                double[] theirPossibleVxs = AdditionalMath.quadraticFormula(other.mass * mass + Math.Pow(other.mass, 2), 2 * other.mass * momentumX, -(2 * mass * xJoules - Math.Pow(momentumX, 2)));
+                double a = .5 * (other.mass + other.mass * other.mass / mass);
+                double b = -momentumX * other.mass / mass;
+                double c = .5 * momentumX * momentumX / mass - xJoules;
+                double[] theirPossibleVxs = AdditionalMath.quadraticFormula(a, b, c);
                 if (Math.Round(theirPossibleVxs[0], 5) == Math.Round(theirComponents[0], 5))
                 {
                     theirXVelocity = theirPossibleVxs[1];
@@ -114,14 +117,17 @@ namespace RealPhysics
                 else
                 {
                     theirXVelocity = theirPossibleVxs[0];
-                    if (theirXVelocity == Double.NaN)
+                    if (Double.IsNaN(theirXVelocity))
                     {
                         theirXVelocity = 0;
                     }
                 }
                 double yJoules = .5 * Math.Pow(components[1], 2) * mass + .5 * Math.Pow(theirComponents[1], 2) * other.mass;
+                double aa = .5 * (other.mass + other.mass * other.mass / mass);
+                double bb= -momentumY * other.mass / mass;
+                double cc = .5 * momentumY * momentumY / mass - yJoules;
                 //formula I figured out don't question it
-                double[] theirPossibleVys = AdditionalMath.quadraticFormula(other.mass * mass + Math.Pow(other.mass, 2), 2 * other.mass * momentumX, -(2 * mass * yJoules - Math.Pow(momentumX, 2)));
+                double[] theirPossibleVys = AdditionalMath.quadraticFormula(aa, bb, cc);
                 if (Math.Round(theirPossibleVys[0], 5) == Math.Round(theirComponents[1], 5))
                 {
                     theirYVelocity = theirPossibleVys[1];
