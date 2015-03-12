@@ -34,14 +34,14 @@ namespace RealPhysics
             }
 
             //hopefully this will not be necessary
-            public RectangleF gravityZone(float height)
+            public RectangleF gravityZone(float height, float width)
             {
-                return new RectangleF(hitbox.X, hitbox.Y + height, hitbox.Width, height + hitbox.Height);
+                return new RectangleF(hitbox.X - width/2, hitbox.Y + height, hitbox.Width + width, height + hitbox.Height);
             }
 
-            public RectangleF underside(float height)
+            public RectangleF underside(float height, float width)
             {
-                return new RectangleF(hitbox.X, hitbox.Y, hitbox.Width, height + hitbox.Height); 
+                return new RectangleF(hitbox.X- width, hitbox.Y, hitbox.Width + width*2, height + hitbox.Height); 
             }
 
             public RectangleF getHitbox()

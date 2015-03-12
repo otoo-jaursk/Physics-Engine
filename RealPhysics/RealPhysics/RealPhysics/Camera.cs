@@ -10,19 +10,18 @@ namespace RealPhysics
 {
     public class Camera
     {
-        private GameObject focus;
         private double meters_to_pixels;
         private Universe universe;
         private double XAXIS = SystemParameters.PrimaryScreenWidth;
         private double YAXIS = SystemParameters.PrimaryScreenHeight;
 
-        public Camera(double metersPerScreen, Universe world, GameObject focus)
+        public Camera(double metersPerScreen, Universe world)
         {
             meters_to_pixels = metersPerScreen / SystemParameters.PrimaryScreenWidth;
             universe = world;
         }
 
-        public List<Rectangle> snapshot()
+        public List<Rectangle> snapshot(GameObject focus)
         {
             List<Rectangle> returnable = new List<Rectangle>();
             RectangleF player = universe.getPlayer().getRekt();

@@ -17,6 +17,21 @@ namespace RealPhysics
             return returnable;
         }
 
+        /*order of corners as follo [0, x] Top left [1, x] top right [2, x] bottom left bottom right [3, x]*/
+        public static float[,] getCorners(RectangleF rect)
+        {
+            float[,] returnable = new float[4,2];
+            returnable[0, 0] = rect.X;
+            returnable[0, 1] = rect.Y;
+            returnable[1, 0] = rect.X + rect.Width;
+            returnable[1, 1] = rect.Y;
+            returnable[2, 0] = rect.X;
+            returnable[2, 1] = rect.Y - rect.Height;
+            returnable[3, 0] = rect.X + rect.Width;
+            returnable[3, 1] = rect.Y - rect.Height;
+            return returnable;
+        }
+
         public static bool contains(RectangleF container, RectangleF containee)
         {
             bool x = container.X < containee.X && container.X + container.Width > containee.X + containee.Width;

@@ -60,8 +60,8 @@ namespace RealPhysics
             foreach(Platform plat in platforms){
                 RectangleF rect = obj.getRekt();
                 RectangleF platform = plat.getHitbox();
-                RectangleF gravityZone = plat.gravityZone(rect.Height);
-                RectangleF underside = plat.underside(rect.Height);
+                RectangleF gravityZone = plat.gravityZone(rect.Height, rect.Width);
+                RectangleF underside = plat.underside(rect.Height, rect.Width);
                 bool inPlat = AdditionalMath.contains(gravityZone, rect); /*&& platform.Contains(rect)*/;
                 bool underPlat = AdditionalMath.contains(underside, rect);
                 if (underPlat)
@@ -86,6 +86,7 @@ namespace RealPhysics
                     }   
                     if (Math.Abs(obj.getVelocityMagnitude()) > .3)
                     {
+                        Console.WriteLine(obj.getName() + " friction direction " + (obj.getVelocityDirection() + Math.PI));
                         obj.addForce(new Vector(plat.getKineticFriction() * g * obj.getMass(), obj.getVelocityDirection() + Math.PI, VectorType.FRICTION, "friction with " + plat.getName()));
                     }
                     else
@@ -133,10 +134,6 @@ namespace RealPhysics
             bool inAnyPlat = operatePlats(player);
             if (!inAnyPlat)
             {
-                if (keysDown[0])
-                {
-                    Console.WriteLine("Gravity ho");
-                }
                 player.removeForce("jump up");
                 player.removeAllForces(VectorType.FRICTION);
                 Vector gravity = new Vector(g * player.getMass(), 3 * Math.PI / 2, VectorType.GRAVITY, "gravity");

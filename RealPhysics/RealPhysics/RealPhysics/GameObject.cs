@@ -87,15 +87,19 @@ namespace RealPhysics
         private void determineAcceleration()
         {
             Vector fnet = new Vector(0, 0, VectorType.FORCE, "resultantForce");
+            Console.WriteLine(name + " num forces " + hashedForces.Count);
             foreach (Vector v in hashedForces)
             {
+                //Console.WriteLine(name + " " + v.getName() + " direction " + v.getDirection() + " " + v.getMagnitude());
                 fnet = fnet.resultantVector(v);
             }
+            //Console.WriteLine(name + " " + fnet.getName() + " direction " + fnet.getDirection() + " " + fnet.getMagnitude());
             acceleration = new Vector(fnet.getMagnitude() / mass, fnet.getDirection(), VectorType.ACCELERATION, "acceleration");
         }
 
         public void collision(GameObject other)
         {
+            Console.WriteLine("Collision");
             double[] components = velocity.getComponent();
             double[] theirComponents = other.velocity.getComponent();
             double momentumX = components[0] * mass + theirComponents[0] * other.mass;
@@ -140,8 +144,12 @@ namespace RealPhysics
                         theirYVelocity = 0;
                     }
                 }
+               // Console.WriteLine("Joules: " + xJoules + " " + yJoules);
+                //Console.WriteLine("momentum: " + momentumX + " " + momentumY);
+               // Console.WriteLine(other.name + " velocity " + theirXVelocity + " " + theirYVelocity);
                 ourYVelocity = (momentumY - theirYVelocity * other.mass) / mass;
                 ourXVelocity = (momentumX - theirXVelocity * other.mass) / mass;
+               // Console.WriteLine(name + " velocity " + ourXVelocity + " " + ourYVelocity);
             }
             else
             {
@@ -154,17 +162,77 @@ namespace RealPhysics
             double direction = Math.Atan2(ourYVelocity, ourXVelocity);
             velocity = new Vector(velocityMag, direction, VectorType.VELOCITY, "velocity");
             other.velocity = new Vector(otherVelocityMag, otherDirection, VectorType.VELOCITY, "velocity");
+            float[,] ourCorn = AdditionalMath.getCorners(rekt);
+            float[,] theirCorn = AdditionalMath.getCorners(other.rekt);
+          /*  bool[] theyContain = new bool[4];
+            bool[] weContain = new bool[4];
+            for (int i = 0; i < 4; i++)
+            {
+                bool contains = AdditionalMath.contains(new PointF(ourCorn[i, 0], ourCorn[i, 1]), other.rekt);
+                bool contains2 = AdditionalMath.contains(new PointF(theirCorn[i, 0], theirCorn[i, 1]), rekt);
+                theyContain[i] = contains;
+                weContain[i] = contains2;
+            }
+            if(theyContain[0] && theyContain[2])
+            {
+                rekt = new RectangleF(other.rekt.X + other.rekt.Width, rekt.Y, rekt.Width, rekt.Height);
+            }
+            if(theyContain[1] && theyContain[3])
+            {
+                rekt = new RectangleF(rekt.X - ((rekt.X + rekt.Width)- other.rekt.X)));
+            }*/
+            float xChange = 0;
+            float yChange = 0;
             if (rekt.X < other.rekt.X)
             {
-                float change = ((rekt.X + rekt.Width) - other.rekt.X) / 2;
-                rekt = new RectangleF(rekt.X - change, rekt.Y, rekt.Width, rekt.Height);
-                other.rekt = new RectangleF(other.rekt.X + change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
+                xChange = ((rekt.X + rekt.Width) - other.rekt.X) / 2;
+                //rekt = new RectangleF(rekt.X - change, rekt.Y, rekt.Width, rekt.Height);
+                //other.rekt = new RectangleF(other.rekt.X + change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
             }
             if (rekt.X > other.rekt.X)
             {
-                float change = ((other.rekt.X  + other.rekt.Width) - rekt.X) / 2;
-                other.rekt = new RectangleF(other.rekt.X - change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
-                rekt = new RectangleF(rekt.X + change, rekt.Y, rekt.Width, rekt.Height); 
+                xChange = ((other.rekt.X  + other.rekt.Width) - rekt.X) / 2;
+                //other.rekt = new RectangleF(other.rekt.X - change, other.rekt.Y, other.rekt.Width, other.rekt.Height);
+                //rekt = new RectangleF(rekt.X + change, rekt.Y, rekt.Width, rekt.Height); 
+            }
+            if(rekt.Y < other.rekt.Y)
+            {
+                yChange = (rekt.Y - (other.rekt.Y - other.rekt.Height)) / 2;
+                //other.rekt = new RectangleF(other.rekt.X, other.rekt.Y - change, other.rekt.Width, other.rekt.Height);
+                //rekt = new RectangleF(rekt.X, rekt.Y + change, rekt.Width, rekt.Height);
+            }
+            if (rekt.Y > other.rekt.Y)
+            {
+                yChange = (other.rekt.Y - (rekt.Y - rekt.Height)) / 2;
+                //other.rekt = new RectangleF(other.rekt.X, other.rekt.Y + change, other.rekt.Width, other.rekt.Height);
+                //rekt = new RectangleF(rekt.X, rekt.Y - change, rekt.Width, rekt.Height);
+            }
+            if (xChange > yChange)
+            {
+                if (rekt.X < other.rekt.X)
+                {
+                    other.rekt = new RectangleF(other.rekt.X - xChange, other.rekt.Y, other.rekt.Width, other.rekt.Height);
+                    rekt = new RectangleF(rekt.X + xChange, rekt.Y, rekt.Width, rekt.Height);
+                }
+                else
+                {
+                    other.rekt = new RectangleF(other.rekt.X + xChange, other.rekt.Y, other.rekt.Width, other.rekt.Height);
+                    rekt = new RectangleF(rekt.X - xChange, rekt.Y, rekt.Width, rekt.Height);
+                }
+
+            }
+            else
+            {
+                if (rekt.Y < other.rekt.Y)
+                {
+                    other.rekt = new RectangleF(other.rekt.X, other.rekt.Y - yChange, other.rekt.Width, other.rekt.Height);
+                    rekt = new RectangleF(rekt.X, rekt.Y + yChange, rekt.Width, rekt.Height);
+                }
+                if (rekt.Y > other.rekt.Y)
+                {
+                    other.rekt = new RectangleF(other.rekt.X, other.rekt.Y + yChange, other.rekt.Width, other.rekt.Height);
+                    rekt = new RectangleF(rekt.X, rekt.Y - yChange, rekt.Width, rekt.Height);
+                }
             }
 
         }
@@ -203,6 +271,7 @@ namespace RealPhysics
             {
                 velocity = new Vector(0, 0, VectorType.VELOCITY, "velocity");
             }
+            //Console.WriteLine(name + " acceleration " + acceleration.getMagnitude() + " " + acceleration.getDirection());
             double[] comps = velocity.getComponent();
             float x = rekt.X;
             if(Math.Abs(comps[0]) > 0)
